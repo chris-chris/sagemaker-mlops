@@ -1,0 +1,4 @@
+{
+  "epochs": {"_type":"choice","_value":[100, 300, 500, 1000]},
+  "lr":{"_type":"loguniform","_value":[0.005, 0.2]},
+}

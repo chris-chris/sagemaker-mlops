@@ -1,0 +1,21 @@
+authorName: Chris
+experimentName: device-failure
+trialConcurrency: 4
+maxExecDuration: 48h
+maxTrialNum: 100
+#choice: local, remote, pai
+trainingServicePlatform: local
+#choice: true, false
+useAnnotation: false
+searchSpacePath: tf2_space.json
+tuner:
+  #choice: TPE, Random, Anneal, Evolution, BatchTuner, MetisTuner
+  #SMAC (SMAC should be installed through nnictl)
+  builtinTunerName: Anneal
+  classArgs:
+    #choice: maximize, minimize
+    optimize_mode: minimize
+trial:
+  command: python tf2.py
+  codeDir: .
+  gpuNum: 0
