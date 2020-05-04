@@ -31,9 +31,10 @@ def model(train_dataset, test_dataset, args):
   model.fit(
       train_dataset.shuffle(SHUFFLE_BUFFER_SIZE).batch(BATCH_SIZE),
       validation_data=test_dataset.batch(BATCH_SIZE),
-      epochs=100, verbose=1, callbacks=[early_stopping])
+      epochs=100, verbose=0, callbacks=[early_stopping])
 
-  model.evaluate(test_dataset.batch(BATCH_SIZE))
+  loss = model.evaluate(test_dataset.batch(BATCH_SIZE))
+  print(f"test loss: {loss}")
 
   return model
 
