@@ -18,10 +18,10 @@ def model(train_dataset, test_dataset, args):
   """Generate a simple model"""
   model = Sequential(
       [
-        Dense(256, input_shape=(8,)),
-        Dense(64, activation='relu',
+        Dense(args.fc1, input_shape=(8,)),
+        Dense(args.fc2, activation='relu',
               kernel_regularizer=tf.keras.regularizers.l2(0.01)),
-        Dropout(0.5),
+        Dropout(args.dropout),
         Dense(1, activation='sigmoid')
       ])
   # eval_callback = LambdaCallback(
@@ -68,6 +68,9 @@ def _parse_args():
   parser.add_argument('--hosts', type=list, default=json.loads(os.environ.get('SM_HOSTS')))
   parser.add_argument('--current-host', type=str, default=os.environ.get('SM_CURRENT_HOST'))
   parser.add_argument('--learning-rate', type=float, default=0.001)
+  parser.add_argument('--fc1', type=int, default=256)
+  parser.add_argument('--fc2', type=int, default=64)
+  parser.add_argument('--dropout', type=float, default=0.5)
 
   return parser.parse_known_args()
 
