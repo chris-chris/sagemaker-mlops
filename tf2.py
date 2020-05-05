@@ -28,7 +28,7 @@ def model(train_dataset, test_dataset, args):
   #     on_epoch_end=lambda epoch, logs: logs.update(
   #         {'mean_logits': K.eval(mean)}
   #     ))
-  model.compile(optimizer=Adam(learning_rate=args.lr), loss='binary_crossentropy')
+  model.compile(optimizer=Adam(learning_rate=args.learning_rate), loss='binary_crossentropy')
   early_stopping = EarlyStopping(monitor='val_loss', patience=10)
 
   model.fit(
