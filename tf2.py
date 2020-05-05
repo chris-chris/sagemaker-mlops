@@ -67,7 +67,7 @@ def _parse_args():
   parser.add_argument('--train', type=str, default=os.environ.get('SM_CHANNEL_TRAINING'))
   parser.add_argument('--hosts', type=list, default=json.loads(os.environ.get('SM_HOSTS')))
   parser.add_argument('--current-host', type=str, default=os.environ.get('SM_CURRENT_HOST'))
-  parser.add_argument('--lr', type=float, default=0.001)
+  parser.add_argument('--learning-rate', type=float, default=0.001)
 
   return parser.parse_known_args()
 
@@ -76,6 +76,7 @@ if __name__ == "__main__":
   args, unknown = _parse_args()
 
   print("ars: ", args)
+  print(f"learning_rate: {args.learning_rate}")
 
   train_dataset, test_dataset = _load_data(args.train)
 
