@@ -8,7 +8,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import EarlyStopping, LambdaCallback
 from tensorflow.keras.optimizers import Adam
 
 BATCH_SIZE = 64
@@ -24,7 +24,10 @@ def model(train_dataset, test_dataset, args):
         Dropout(0.5),
         Dense(1, activation='sigmoid')
       ])
-
+  # eval_callback = LambdaCallback(
+  #     on_epoch_end=lambda epoch, logs: logs.update(
+  #         {'mean_logits': K.eval(mean)}
+  #     ))
   model.compile(optimizer=Adam(learning_rate=args.lr), loss='binary_crossentropy')
   early_stopping = EarlyStopping(monitor='val_loss', patience=10)
 
@@ -32,9 +35,6 @@ def model(train_dataset, test_dataset, args):
       train_dataset.shuffle(SHUFFLE_BUFFER_SIZE).batch(BATCH_SIZE),
       validation_data=test_dataset.batch(BATCH_SIZE),
       epochs=100, verbose=0, callbacks=[early_stopping])
-
-  loss = model.evaluate(test_dataset.batch(BATCH_SIZE))
-  print(f"test loss: {loss}")
 
   return model
 
@@ -75,9 +75,15 @@ def _parse_args():
 if __name__ == "__main__":
   args, unknown = _parse_args()
 
+  print("ars: ", args)
+
   train_dataset, test_dataset = _load_data(args.train)
 
   device_failure_model = model(train_dataset, test_dataset, args)
+
+  loss = device_failure_model.evaluate(test_dataset.batch(BATCH_SIZE))
+  print(f"test loss: {loss}")
+  tf.summary.scalar("test_loss", loss)
 
   if args.current_host == args.hosts[0]:
     # save model to an S3 directory with version number '00000001'
