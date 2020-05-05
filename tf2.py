@@ -83,7 +83,7 @@ if __name__ == "__main__":
   device_failure_model = model(train_dataset, test_dataset, args)
 
   loss = device_failure_model.evaluate(test_dataset.batch(BATCH_SIZE))
-  print(f"test_loss={loss};")
+  print(f"test_loss: {loss}")
   tf.summary.scalar("test_loss", loss)
 
   if args.current_host == args.hosts[0]:
