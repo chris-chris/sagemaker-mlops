@@ -8,7 +8,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.callbacks import EarlyStopping, LambdaCallback
+from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.optimizers import Adam
 
 BATCH_SIZE = 64
@@ -24,10 +24,7 @@ def model(train_dataset, test_dataset, args):
         Dropout(args.dropout),
         Dense(1, activation='sigmoid')
       ])
-  # eval_callback = LambdaCallback(
-  #     on_epoch_end=lambda epoch, logs: logs.update(
-  #         {'mean_logits': K.eval(mean)}
-  #     ))
+
   model.compile(optimizer=Adam(learning_rate=args.learning_rate), loss='binary_crossentropy')
   early_stopping = EarlyStopping(monitor='val_loss', patience=10)
 
